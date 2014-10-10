@@ -1,6 +1,5 @@
 <?php
 
-require_once './php/index.php';
+require_once '/php/index.php';
 
 ?>
-ffd
