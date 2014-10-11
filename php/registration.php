@@ -19,7 +19,7 @@ function main()
 	{
 		// ошибки добавляются внутри вызываемых функций
 		//  содержат описание ошибки.
-		if (data_validation() || check_for_duplicates())
+		if (check_entered_data() && check_for_duplicates())
 		{
 			register();
 		}
@@ -33,14 +33,14 @@ function main()
  * @return bool
  * @author Mip, SergeShaw
  **/
-function data_validation()
+function check_entered_data()
 {
 	global $data;
 
 	// Задел на будущее
 	// Проверка дополнительных данных
-	if ((!isset($_POST['login'])) ||//     || (!isset($_POST['sign_up']['email'])) ||
-		 (!isset($_POST['password'])))//  || (!isset($_POST['sign_up']['password2'])))
+	if ((empty($_POST['login'])) ||//     || (empty($_POST['sign_up']['email'])) ||
+		 (empty($_POST['password'])))//  || (empty($_POST['sign_up']['password2'])))
 	{
 		$data['error']['data_check'] = 'Заполните все поля.';
 		return false;
@@ -55,7 +55,7 @@ function data_validation()
 	// Задел на будущее
 	// Проверка на корректность емейла
 	//
-	// else if (!preg_match("/^[\-\.a-zA-Z0-9]+@[a-z\-]+\.[a-zA-Z]+\.?[a-zA-Z]*$/", $POST_['email']))
+	// else if (!preg_match("/^[\-\.a-zA-Z0-9]+@[a-z\-]+\.[a-zA-Z]+\.?[a-zA-Z]*$/", $_POST['email']))
 	// {
 	// 	$data['error']['data_check'] = 'Введённый адрес электронной почты не корректен.';
 	// 	return false;
@@ -63,9 +63,9 @@ function data_validation()
 	//
 	// Логин должен содержать от 4 до 20 символов латинского алфовита или цифр.
 	// Также допускаются знаки подчёркивание и тире.
-	else if (!preg_match("/^[\-\_a-zA-Z0-9]{4,20}$/", $POST_['login']))
+	else if (!preg_match("/^[\-\_a-zA-Z0-9]{4,20}$/", $_POST['login']))
 	{
-		$data['error']['data_check'] = 'Введённый логин не корректен. Логин должен содержать от 4 до 20 символов латинского алфовита или цифр. Также допускаются знаки подчёркивание и тире.';
+		$data['error']['data_check'] = 'Введённый логин не корректен. Логин должен содержать от 4 до 20 символов латинского алфaвита или цифр. Также допускаются знаки подчёркивание и тире.';
 		return false;
 	}
 	else
@@ -81,17 +81,17 @@ function data_validation()
  * @return bool
  * @author SergeShaw
  **/
-function db_validation()
+function check_for_duplicates()
 {
 	global $data;
 
 	try
 	{
-		$db_reg_login_check = database_main::$DBH->prepare(
+		$db_reg_login_check = database::$DBH->prepare(
 			"SELECT *
 			 FROM `users`
 			 WHERE login = :login");
-		$db_reg_login_check->bindValue(':login', $POST_['login']);
+		$db_reg_login_check->bindValue(':login', $_POST['login']);
 		$db_reg_login_check->execute();
 
 		if ($db_reg_login_check->rowCount())
@@ -104,11 +104,11 @@ function db_validation()
 			// Задел на будущие.
 			// Проверка на совпадение с уже используемым емейлом.
 			//
-			// $db_reg_email_check = database_main::$DBH->prepare(
+			// $db_reg_email_check = database::$DBH->prepare(
 			// 	"SELECT *
 			// 	 FROM `users`
 			// 	 WHERE email = :email");
-			// $db_reg_email_check->bindValue(':email', $POST_['email']);
+			// $db_reg_email_check->bindValue(':email', $_POST['email']);
 			// $db_reg_email_check->execute();
 
 			// if ($db_reg_email_check->rowCount())
