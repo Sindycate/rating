@@ -6,15 +6,19 @@
 		</div>
 
 		<?php if ($data['error']['data_check']) { ?>
-			<div class="error">Вы не ввели все данные или они не корректны.</div>
+			<p class="bg-danger"><?php echo($data['error']['data_check']); ?></p>
 		<?php } ?>
 
 		<?php if ($data['error']['db_check']) { ?>
-			<div class="error">Такой введённый login или e-mail уже используется.</div>
+			<p class="bg-danger"><?php echo($data['error']['db_check']); ?></p>
+		<?php } ?>
+
+		<?php if ($data['error']['PDO']) { ?>
+			<p class="bg-danger"><?php echo($data['error']['PDO']); ?></p>
 		<?php } ?>
 
 		<?php if ($data['success']) { ?>
-			<div class="success">Регистрация прошла успешно.</div>
+			<p class="bg-success"><?php echo($data['success']); ?></p>
 		<?php } ?>
 
 		<form class="form-horizontal" role="form" action="registration" method="post">
