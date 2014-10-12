@@ -39,8 +39,8 @@ function check_entered_data()
 
 	// Задел на будущее
 	// Проверка дополнительных данных
-	if ((empty($_POST['login'])) ||//     || (empty($_POST['sign_up']['email'])) ||
-		 (empty($_POST['password'])))//  || (empty($_POST['sign_up']['password2'])))
+	if ((empty($_POST['login'])) || (empty($_POST['email'])) ||
+		 (empty($_POST['password'])))//  || (empty($_POST['password2'])))
 	{
 		$data['error']['data_check'] = 'Заполните все поля.';
 		return false;
@@ -54,13 +54,13 @@ function check_entered_data()
 	}
 	// Задел на будущее
 	// Проверка на корректность емейла
-	//
-	// else if (!preg_match("/^[\-\.a-zA-Z0-9]+@[a-z\-]+\.[a-zA-Z]+\.?[a-zA-Z]*$/", $_POST['email']))
-	// {
-	// 	$data['error']['data_check'] = 'Введённый адрес электронной почты не корректен.';
-	// 	return false;
-	// }
-	//
+
+	else if (!preg_match("/^[\-\.a-zA-Z0-9]+@[a-z\-]+\.[a-zA-Z]+\.?[a-zA-Z]*$/", $_POST['email']))
+	{
+		$data['error']['data_check'] = 'Введённый адрес электронной почты не корректен.';
+		return false;
+	}
+
 	// Логин должен содержать от 4 до 20 символов латинского алфовита или цифр.
 	// Также допускаются знаки подчёркивание и тире.
 	else if (!preg_match("/^[\-\_a-zA-Z0-9]{4,20}$/", $_POST['login']))
@@ -101,21 +101,19 @@ function check_for_duplicates()
 		}
 		else
 		{
-			// Задел на будущие.
-			// Проверка на совпадение с уже используемым емейлом.
-			//
-			// $db_reg_email_check = database::$DBH->prepare(
-			// 	"SELECT *
-			// 	 FROM `users`
-			// 	 WHERE email = :email");
-			// $db_reg_email_check->bindValue(':email', $_POST['email']);
-			// $db_reg_email_check->execute();
+			//Проверка на совпадение с уже используемым емейлом.
+			$db_reg_email_check = database::$DBH->prepare(
+				"SELECT *
+				 FROM `users`
+				 WHERE email = :email");
+			$db_reg_email_check->bindValue(':email', $_POST['email']);
+			$db_reg_email_check->execute();
 
-			// if ($db_reg_email_check->rowCount())
-			// {
-			// 	$data['error']['db_check'] = 'Введённый адрес электронной почты уже используется.';
-			// 	return false;
-			// }
+			if ($db_reg_email_check->rowCount())
+			{
+				$data['error']['db_check'] = 'Введённый адрес электронной почты уже используется.';
+				return false;
+			}
 		}
 
 		return true;
@@ -140,10 +138,11 @@ function register()
 	try
 	{
 		$db_add_users = database::$DBH->prepare(
-			"INSERT INTO `users` (`login`, `hash`)
-			 VALUES (:login, :hash)");
+			"INSERT INTO `users` (`login`, `hash`, `email`)
+			 VALUES (:login, :hash, :email)");
 		$db_add_users->bindValue(':login', $_POST['login']);
 		$db_add_users->bindValue(':hash', md5($_POST['password']));
+		$db_add_users->bindValue(':email', $_POST['email']);
 		$db_add_users->execute();
 
 		$data['success'] = "Регистрация прошла успешно.";
