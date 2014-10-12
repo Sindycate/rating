@@ -4,23 +4,6 @@
 		<div class="center-block registration-title">
 			<h1>Регистрация</h1>
 		</div>
-
-		<?php if ($data['error']['data_check']) { ?>
-			<div class="alert alert-danger " role="alert"><?php echo($data['error']['data_check']); ?></div>
-		<?php } ?>
-
-		<?php if ($data['error']['db_check']) { ?>
-			<div class="alert alert-danger" role="alert"><?php echo($data['error']['db_check']); ?></div>
-		<?php } ?>
-
-		<?php if ($data['error']['PDO']) { ?>
-			<div class="alert alert-danger" role="alert"><?php echo($data['error']['PDO']); ?></div>
-		<?php } ?>
-
-		<?php if ($data['success']) { ?>
-			<div class="alert alert-success" role="alert"><?php echo($data['success']); ?></div>
-		<?php } ?>
-
 		<form class="form-horizontal" role="form" action="registration" method="post">
 			<div class="form-group">
 				<label for="inputLogin" class="col-xs-2 control-label">Логин</label>

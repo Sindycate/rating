@@ -17,21 +17,41 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">Rating</a>
+				<a class="navbar-brand" href=".">Rating</a>
 			</div>
 			<div class="navbar-collapse collapse">
-				<form class="navbar-form navbar-right" role="form">
+			<?php if (!$data['user']) { ?>
+				<form class="navbar-form navbar-right" role="form" action="sign-in" method="post">
 					<div class="form-group">
-						<input type="text" placeholder="Email" class="form-control">
+						<input type="text" name="login" placeholder="Login" class="form-control">
 					</div>
 					<div class="form-group">
-						<input type="password" placeholder="Password" class="form-control">
+						<input type="password" name="password" placeholder="Password" class="form-control">
 					</div>
-					<button type="submit" class="btn btn-success">Sign in</button>
+					<button type="submit" name="submit" class="btn btn-success">Sign in</button>
+					<a class="btn btn-primary" href="/rating/registration">Sign up</a>
 				</form>
+			<?php } else { ?>
+				<div class="alert alert-success" role="alert"><?php echo($data['user']['id']); ?><a href="/rating/logout/">Выйти</a></div>
+			<?php } ?>
 			</div><!--/.navbar-collapse -->
 		</div>
 	</div>
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-8 col-xs-offset-2">
+			<?php if ($data['error']['data_check']) { ?>
+				<div class="alert alert-danger " role="alert"><?php echo($data['error']['data_check']); ?></div>
+			<?php } ?>
+
+			<?php if ($data['error']['db_check']) { ?>
+				<div class="alert alert-danger" role="alert"><?php echo($data['error']['db_check']); ?></div>
+			<?php } ?>
+
+			<?php if ($data['error']['PDO']) { ?>
+				<div class="alert alert-danger" role="alert"><?php echo($data['error']['PDO']); ?></div>
+			<?php } ?>
+
+			<?php if ($data['success']) { ?>
+				<div class="alert alert-success" role="alert"><?php echo($data['success']); ?></div>
+			<?php } ?>

@@ -13,13 +13,13 @@ $data = array();
  * @return void
  * @author Mip, SergeShaw
  **/
-function main()
+function registration()
 {
 	if (isset($_POST['submit']))
 	{
 		// ошибки добавляются внутри вызываемых функций
 		//  содержат описание ошибки.
-		if (check_entered_data() && check_for_duplicates())
+		if (isset($_POST['submit']) && check_entered_data() && check_for_duplicates())
 		{
 			register();
 		}
@@ -153,7 +153,7 @@ function register()
 	}
 }
 
-main();
+registration();
 
 require_once('/html/header.html');
 require_once('/html/registration.html');
