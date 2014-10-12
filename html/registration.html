@@ -6,19 +6,19 @@
 		</div>
 
 		<?php if ($data['error']['data_check']) { ?>
-			<p class="bg-danger"><?php echo($data['error']['data_check']); ?></p>
+			<div class="alert alert-danger" role="alert"><?php echo($data['error']['data_check']); ?></div>
 		<?php } ?>
 
 		<?php if ($data['error']['db_check']) { ?>
-			<p class="bg-danger"><?php echo($data['error']['db_check']); ?></p>
+			<div class="alert alert-danger" role="alert"><?php echo($data['error']['db_check']); ?></div>
 		<?php } ?>
 
 		<?php if ($data['error']['PDO']) { ?>
-			<p class="bg-danger"><?php echo($data['error']['PDO']); ?></p>
+			<div class="alert alert-danger" role="alert"><?php echo($data['error']['PDO']); ?></div>
 		<?php } ?>
 
 		<?php if ($data['success']) { ?>
-			<p class="bg-success"><?php echo($data['success']); ?></p>
+			<div class="alert alert-success" role="alert"><?php echo($data['success']); ?></div>
 		<?php } ?>
 
 		<form class="form-horizontal" role="form" action="registration" method="post">
