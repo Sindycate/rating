@@ -4,13 +4,15 @@
  * Управляющая функция добавления нового человека
  *
  * @return void
- * @author Mip
+ * @author Mip, SergeShaw
  **/
-function add_person()
+function profile()
 {
-	if (isset($_POST['submit']) && check_entered_data() && check_for_duplicates())
+	global $data;
+
+	if (isset($_POST['submit']) && $data['user'] && check_entered_data() && check_for_duplicates())
 	{
-		register();
+		add_person();
 	}
 }
 
@@ -73,17 +75,19 @@ function check_for_duplicates()
 		$db_reg_data_check = database::$DBH->prepare(
 			"SELECT *
 			 FROM `students`
-			 WHERE first_name = :firstName AND
-			 last_name = :lastName AND
-			 patronymic = :patronymic");
+			 WHERE (`first_name` = :firstName
+			 AND    `last_name`  = :lastName
+			 AND    `patronymic` = :patronymic)
+			 OR     `owner`      = :owner");
 		$db_reg_data_check->bindValue(':firstName', $_POST['firstName']);
 		$db_reg_data_check->bindValue(':lastName', $_POST['lastName']);
 		$db_reg_data_check->bindValue(':patronymic', $_POST['patronymic']);
+		$db_reg_data_check->bindValue(':owner', $data['user']['id']);
 		$db_reg_data_check->execute();
 
 		if ($db_reg_data_check->rowCount())
 		{
-			$data['error']['db_check'] = 'Такой пользователь уже существует, проверьте списки.';
+			$data['error']['db_check'] = 'Такой пользователь уже существует, проверьте списки. Либо ваш лимит израсходован.';
 			return false;
 		}
 
@@ -102,18 +106,19 @@ function check_for_duplicates()
  * @return void
  * @author Mip, SergeShaw
  **/
-function register()
+function add_person()
 {
 	global $data;
 
 	try
 	{
 		$db_add_users = database::$DBH->prepare(
-			"INSERT INTO `students` (`first_name`, `last_name`, `patronymic`)
-			 VALUES (:firstName, :lastName, :patronymic)");
+			"INSERT INTO `students` (`first_name`, `last_name`, `patronymic`, `owner`)
+			 VALUES (:firstName, :lastName, :patronymic, :owner)");
 		$db_add_users->bindValue(':firstName', $_POST['firstName']);
 		$db_add_users->bindValue(':lastName', $_POST['lastName']);
 		$db_add_users->bindValue(':patronymic', $_POST['patronymic']);
+		$db_add_users->bindValue(':owner', $data['user']['id']);
 		$db_add_users->execute();
 
 		$data['success'] = "Добавление нового пользователя прошло успешно.";
@@ -124,7 +129,7 @@ function register()
 	}
 }
 
-add_person();
+profile();
 
 require_once('/html/header.html');
 require_once('/html/footer.html');

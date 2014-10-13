@@ -12,22 +12,16 @@
 	<?php if ($data['students']) { ?>
 		<?php for ($ii = 0; $ii < count($data['students']); ++$ii) { ?>
 			<tr>
-				<?php for ($jj = 0; $jj < 8; ++$jj) { ?>
-					<td><?php echo $data['students'][$ii][$jj]; ?></td>
-				<?php } ?>
+				<td><?php echo $data['students'][$ii]['id']; ?></td>
+				<td><?php echo $data['students'][$ii]['last_name']; ?></td>
+				<td><?php echo $data['students'][$ii]['first_name']; ?></td>
+				<td><?php echo $data['students'][$ii]['patronymic']; ?></td>
+				<td><?php echo $data['students'][$ii]['points']; ?></td>
+				<td><?php echo $data['students'][$ii]['faculty']; ?></td>
+				<td><?php echo $data['students'][$ii]['USE']; ?></td>
+				<td><?php echo $data['students'][$ii]['category']; ?></td>
 			</tr>
 		<?php } ?>
 	<?php } ?>
-	<tr>
-		<td>Павел</td>
-		<td>Сметанин</td>
-		<td>Сергеевич</td>
-		<td>100</td>
-	</tr>
-	<tr>
-		<td>Олег</td>
-		<td>Девятов</td>
-		<td>Сергеевич</td>
-		<td>98</td>
 	</tr>
 </table>

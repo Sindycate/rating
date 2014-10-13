@@ -41,7 +41,7 @@ function router()
 	{
 		require_once('/php/logout.php');
 	}
-	else if ($requestURI[2] == 'profile')
+	else if ($requestURI[2] == 'profile' && $data['user'])
 	{
 		require_once('/php/profile.php');
 	}
