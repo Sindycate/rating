@@ -8,14 +8,9 @@
  **/
 function registration()
 {
-	if (isset($_POST['submit']))
+	if (isset($_POST['submit']) && check_entered_data() && check_for_duplicates())
 	{
-		// ошибки добавляются внутри вызываемых функций
-		//  содержат описание ошибки.
-		if (isset($_POST['submit']) && check_entered_data() && check_for_duplicates())
-		{
-			register();
-		}
+		register();
 	}
 }
 
