@@ -69,17 +69,11 @@ function login()
 				$db_session_update->bindValue(':hash', $user['hash']);
 				$db_session_update->execute();
 			}
-
-			header("Location: .");
 		}
 		catch (PDOException $ee)
 		{
 			$data['error']['PDO'] = "Ошибка базы данных: " . $ee->getMessage();
 		}
-	}
-	else
-	{
-		header("Location: .");
 	}
 }
 

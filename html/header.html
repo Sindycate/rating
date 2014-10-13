@@ -32,11 +32,7 @@
 					<a class="btn btn-primary" href="/rating/registration">Sign up</a>
 				</form>
 			<?php } else { ?>
-				<!-- <?php echo($data['user']['id']); ?> -->
-				<div class="navbar-form navbar-right">
-					<a class="btn btn-success" href="/rating/logout/">Exit</a>
-					<a class="btn btn-primary" href="/rating/profile/">Profile</a>
-				</div>
+				<div class="alert alert-success" role="alert"><?php echo($data['user']['id']); ?><a href="/rating/logout/">Выйти</a></div>
 			<?php } ?>
 			</div><!--/.navbar-collapse -->
 		</div>
