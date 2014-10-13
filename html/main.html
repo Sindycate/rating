@@ -1,10 +1,23 @@
 <table class="table table-hover">
 	<tr>
-		<th>Имя</th>
+		<th>id</th>
 		<th>Фамилия</th>
+		<th>Имя</th>
 		<th>Отчествол</th>
 		<th>Баллы</th>
+		<th>Факультет</th>
+		<th>ЕГЭ</th>
+		<th>Категория</th>
 	</tr>
+	<?php if ($data['students']) { ?>
+		<?php for ($ii = 0; $ii < count($data['students']); ++$ii) { ?>
+			<tr>
+				<?php for ($jj = 0; $jj < 8; ++$jj) { ?>
+					<td><?php echo $data['students'][$ii][$jj]; ?></td>
+				<?php } ?>
+			</tr>
+		<?php } ?>
+	<?php } ?>
 	<tr>
 		<td>Павел</td>
 		<td>Сметанин</td>
