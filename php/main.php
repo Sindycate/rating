@@ -10,7 +10,8 @@ function main()
 {
 	global $data;
 
-	$data['students'] = get_all_students();
+	$data['students'] = get_students();
+	$data['rows']['num'] = 4;
 }
 
 /**
@@ -19,11 +20,13 @@ function main()
  * @return array
  * @author SergeShaw
  **/
-function get_all_students()
+function get_students()
 {
+	global $data;
+
 	try
 	{
-		$db_get_students = database::$DBH->prepare(
+		/*$db_get_students = database::$DBH->prepare(
 			"SELECT *
 			 FROM `students`
 			 ORDER BY `category` desc");
@@ -32,7 +35,37 @@ function get_all_students()
 		if ($db_get_students->rowCount())
 		{
 			return $db_get_students->fetchAll();
+		}*/
+
+		if (isset($_GET['page_num']))
+		{
+			$data['page']['current'] = $_GET['page_num'];
 		}
+		else {
+			$data['page']['current'] = 1;
+		}
+
+		$articles_num = 4;
+		// $start_pos = ($_GET['page_num'] * 5) ? $_GET['page_num'] * 5 : 0;
+		$start_pos = ($data['page']['current'] - 1) * $articles_num;
+
+		$query  = database::$DBH->prepare("SELECT * FROM students LIMIT $start_pos , $articles_num");
+		$query2 = database::$DBH->prepare("SELECT * FROM students");
+		//execute the query.0
+
+		$query2->execute();
+		$query->execute();
+
+		$data['rows']['count'] = $query2->rowCount();
+
+		if ($query->rowCount())
+		{
+			return $query->fetchAll();
+		}
+
+		$result = $query->fetchAll();
+
+
 	}
 	catch (PDOExeption $ee)
 	{

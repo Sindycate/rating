@@ -4,7 +4,7 @@
 		<th>Фамилия</th>
 		<th>Имя</th>
 		<th>Отчествол</th>
-		<th>Баллы</th>
+		<th><a href="#">Баллы</a></th>
 		<th>Факультет</th>
 		<th>ЕГЭ</th>
 		<th>Категория</th>
@@ -25,3 +25,16 @@
 	<?php } ?>
 	</tr>
 </table>
+<div class="page_nav">
+	<ul class="pagination">
+		<?php for ($ii = (($data['page']['current'] - 4 > 0) ? $data['page']['current'] - 4 : 1); $ii < $data['page']['current'] && $data['page']['current'] != 1; $ii++) { ?>
+			<li><a href="?page_num=<?php echo ($ii); ?>"><?php echo ($ii); ?></a></li>
+		<?php } ?>
+			<li><a href="?page_num=<?php echo ($data['page']['current']); ?>"><?php echo $data['page']['current']; ?></a></li>
+		<?php $data['rows']['num'] = 4;
+		$pages_num = (($data['rows']['count'] / $data['rows']['num']) + (($data['rows']['count'] % $data['rows']['num']) ? 1 : 0));
+		for ($ii = $data['page']['current'] + 1; ($ii <= $pages_num) && ($ii <= $data['page']['current'] + 4); $ii++) { ?>
+			<li><a href="?page_num=<?php echo ($ii); ?>"><?php echo ($ii); ?></a></li>
+		<?php } ?>
+	</ul>
+</div>
