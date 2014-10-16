@@ -1,13 +1,23 @@
+<form class="navbar-form navbar-left" role="search" action="." method="get">
+	<div class="form-group">
+		<input type="text" class="form-control" placeholder="Фамилия" name="last_name">
+		<input type="text" class="form-control" placeholder="Имя" name="first_name">
+	</div>
+	<button type="submit" class="btn btn-default">Найти</button>
+</form>
 <table class="table table-hover">
 	<tr>
 		<th>id</th>
-		<th>Фамилия</th>
+		<th><a href="?order=1">Фамилия</a></th>
 		<th>Имя</th>
 		<th>Отчествол</th>
-		<th><a href="#">Баллы</a></th>
-		<th>Факультет</th>
-		<th>ЕГЭ</th>
+		<th><a href="?order=0">Баллы</a></th>
+		<th><a href="?order=2">Факультет</a></th>
+		<th><a href="?order=3">ЕГЭ</a></th>
 		<th>Категория</th>
+		<?php if ($data['user']['vote']) { ?>
+			<th>+</th>
+		<?php } ?>
 	</tr>
 	<?php if ($data['students']) { ?>
 		<?php for ($ii = 0; $ii < count($data['students']); ++$ii) { ?>
@@ -20,6 +30,13 @@
 				<td><?php echo $data['students'][$ii]['faculty']; ?></td>
 				<td><?php echo $data['students'][$ii]['USE']; ?></td>
 				<td><?php echo $data['students'][$ii]['category']; ?></td>
+				<?php if ($data['user']['vote']) { ?>
+					<td>
+						<form action="." method="post">
+							<button class="btn" type="submit" name="<?php echo $data['user']['id']; ?>" value="<?php echo $data['students'][$ii]['id']; ?>">+</button>
+						</form>
+					</td>
+				<?php } ?>
 			</tr>
 		<?php } ?>
 	<?php } ?>

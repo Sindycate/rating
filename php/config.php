@@ -10,14 +10,14 @@ define('PDO_UTF', 'return ' . var_export($PDO_UTF8, 1) . ';');
 define('MY_SESSION_PATH', '/home/compare/www/sessions');
 // define('MY_SESSION_PATH', '/home/a8593548/public_html/sessions');
 
-// function SQL_Error($STH)
-// {
-// 	if ($STH->errorCode() != '00000')
-// 	{
-// 		$error_array = $STH->errorInfo();
-// 		throw new siteException("SQL ошибка: " . $error_array[2] . '</br>',0);
-// 	}
-// }
+function SQL_Error($STH)
+{
+	if ($STH->errorCode() != '00000')
+	{
+		$error_array = $STH->errorInfo();
+		echo "SQL ошибка: " . $error_array[2];
+	}
+}
 
 class database
 {

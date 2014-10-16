@@ -106,9 +106,9 @@ function check_for_duplicates()
 
 		return true;
 	}
-	catch(PDOException $e)
+	catch(PDOException $ee)
 	{
-		$data['error']['PDO'] = "Ошибка базы данных: " . $e->getMessage();
+		$data['error']['PDO'] = "Ошибка базы данных: " . $ee->getMessage();
 		return false;
 	}
 }

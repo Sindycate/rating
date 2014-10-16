@@ -21,6 +21,8 @@ function router()
 {
 	global $data;
 
+	$data['datetime'] = Date("Y-m-d H:i:s");
+
 	if (sign_in_check())
 	{
 		$data['user']['id'] = $_SESSION['user_id'];
@@ -79,7 +81,7 @@ function sign_in_check()
 		{
 			$userHash = md5($_SERVER['HTTP_USER_AGENT'] . $_COOKIE['highlogin']);
 
-			$db_hash = database_main::$DBH->prepare(
+			$db_hash = database::$DBH->prepare(
 				"SELECT `id`
 				 FROM `session`
 				 WHERE `hash` = :userHash");
