@@ -16,7 +16,7 @@ function main()
 
 		if ($data['user']['vote'] &&
 			 $_POST[$data['user']['id']] &&
-			 student_check($_POST[$data['user']['id']]))
+			 student_check($data['user']['id'], $_POST[$data['user']['id']]))
 		{
 			if (vote($data['user']['id'], $_POST[$data['user']['id']]))
 			{
@@ -26,8 +26,6 @@ function main()
 
 				$data['success'] = "Ваш голос отдан";
 			}
-
-
 		}
 	}
 
@@ -85,8 +83,10 @@ function vote($user_id, $student_id)
  * @return bool
  * @author SergeSahw
  **/
-function student_check($student_id)
+function student_check($user_id, $student_id)
 {
+	global $data;
+
 	try
 	{
 		$db_student_check = database::$DBH->prepare(
@@ -96,13 +96,34 @@ function student_check($student_id)
 		$db_student_check->bindValue(":id", $student_id);
 		$db_student_check->execute();
 
-		return !!$db_student_check->rowCount();
+		if (!$db_student_check->rowCount())
+		{
+			return false;
+		}
+
+		$db_student_user_check = database::$DBH->prepare(
+			"SELECT *
+			 FROM `vote`
+			 WHERE user_id  = :user_id
+			 AND student_id = :student_id
+			 AND date       = CURDATE()");
+		$db_student_user_check->bindValue(":user_id", $user_id);
+		$db_student_user_check->bindValue(":student_id", $student_id);
+		$db_student_user_check->execute();
+
+		if ($db_student_user_check->rowCount())
+		{
+			$data['error']['vote'] = "Сегодня вы уже голосовали за этого человека";
+			return false;
+		}
 	}
 	catch (PDOException $ee)
 	{
 		$data['error']['PDO'] = "Ошибка базы данных: " . $ee->getMessage();
 		return false;
 	}
+
+	return true;
 }
 
 /**

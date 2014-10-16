@@ -56,6 +56,10 @@
 				<div class="alert alert-danger" role="alert"><?php echo($data['error']['PDO']); ?></div>
 			<?php } ?>
 
+			<?php if ($data['error']['vote']) { ?>
+				<div class="alert alert-danger" role="alert"><?php echo($data['error']['vote']); ?></div>
+			<?php } ?>
+
 			<?php if ($data['success']) { ?>
 				<div class="alert alert-success" role="alert"><?php echo($data['success']); ?></div>
 			<?php } ?>
