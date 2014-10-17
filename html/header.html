@@ -20,6 +20,13 @@
 				<a class="navbar-brand" href=".">Rating</a>
 			</div>
 			<div class="navbar-collapse collapse">
+
+				<ul class="nav navbar-nav">
+					<li>
+						<a href="/rating/all">All</a>
+					</li>
+				</ul>
+
 			<?php if (!$data['user']) { ?>
 				<form class="navbar-form navbar-right" role="form" action="sign-in" method="post">
 					<div class="form-group">
@@ -58,6 +65,10 @@
 
 			<?php if ($data['error']['vote']) { ?>
 				<div class="alert alert-danger" role="alert"><?php echo($data['error']['vote']); ?></div>
+			<?php } ?>
+
+			<?php if ($data['warning']['subscribe']) { ?>
+				<div class="alert alert-warning" role="alert"><?php echo($data['warning']['subscribe']); ?></div>
 			<?php } ?>
 
 			<?php if ($data['success']) { ?>

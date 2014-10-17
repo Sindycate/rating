@@ -7,7 +7,6 @@
 </form>
 <table class="table table-hover">
 	<tr>
-		<th>id</th>
 		<th><a href="?order=1">Фамилия</a></th>
 		<th>Имя</th>
 		<th>Отчествол</th>
@@ -18,11 +17,13 @@
 		<?php if ($data['user']['vote']) { ?>
 			<th>+</th>
 		<?php } ?>
+		<?php if ($data['user']) { ?>
+			<th>Follow/Unfollow</th>
+		<?php } ?>
 	</tr>
 	<?php if ($data['students']) { ?>
 		<?php for ($ii = 0; $ii < count($data['students']); ++$ii) { ?>
 			<tr>
-				<td><?php echo $data['students'][$ii]['id']; ?></td>
 				<td><?php echo $data['students'][$ii]['last_name']; ?></td>
 				<td><?php echo $data['students'][$ii]['first_name']; ?></td>
 				<td><?php echo $data['students'][$ii]['patronymic']; ?></td>
@@ -33,7 +34,29 @@
 				<?php if ($data['user']['vote']) { ?>
 					<td>
 						<form action="." method="post">
+							<input type="hidden" name="vote" value="1">
 							<button class="btn" type="submit" name="<?php echo $data['user']['id']; ?>" value="<?php echo $data['students'][$ii]['id']; ?>">+</button>
+						</form>
+					</td>
+				<?php } ?>
+				<?php if ($data['user'] && $data['type'] == 'all') { ?>
+					<td>
+					<form action="" method="post">
+						<?php if (in_array($data['students'][$ii]['id'], $data['subscribe'])){?>
+							<input type="hidden" name="unsubscribe" value="1">
+							<button class="btn btn-warning" type="submit" name="<?php echo $data['user']['id']; ?>" value="<?php echo $data['students'][$ii]['id'];?>">Unfollow</button>
+						<?php } else {?>
+							<input type="hidden" name="subscribe" value="1">
+							<button class="btn btn-primary" type="submit" name="<?php echo $data['user']['id']; ?>" value="<?php echo $data['students'][$ii]['id'];?>">Follow</button>
+						<?php } ?>
+					</form>
+					</td>
+				<?php } ?>
+				<?php if ($data['user'] && ($data['type'] == 'subscribe')) { ?>
+					<td>
+						<form action="" method="post">
+							<input type="hidden" name="unsubscribe" value="1">
+							<button class="btn btn-warning" type="submit" name="<?php echo $data['user']['id']; ?>" value="<?php echo $data['students'][$ii]['student_id']; ?>">Unfollow</button>
 						</form>
 					</td>
 				<?php } ?>
@@ -48,7 +71,7 @@
 			<li><a href="?page_num=<?php echo ($ii); ?>"><?php echo ($ii); ?></a></li>
 		<?php } ?>
 			<li><a href="?page_num=<?php echo ($data['page']['current']); ?>"><?php echo $data['page']['current']; ?></a></li>
-		<?php $data['rows']['num'] = 4;
+		<?php
 		$pages_num = (($data['rows']['count'] / $data['rows']['num']) + (($data['rows']['count'] % $data['rows']['num']) ? 1 : 0));
 		for ($ii = $data['page']['current'] + 1; ($ii <= $pages_num) && ($ii <= $data['page']['current'] + 4); $ii++) { ?>
 			<li><a href="?page_num=<?php echo ($ii); ?>"><?php echo ($ii); ?></a></li>
