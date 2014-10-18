@@ -45,6 +45,7 @@ function router()
 	}
 	else if ($requestURI[2] == 'profile' && $data['user'])
 	{
+		$data['place'] = $requestURI[3];
 		require_once('/php/profile.php');
 	}
 	else

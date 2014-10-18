@@ -1,34 +1,50 @@
-<link rel="stylesheet" href="./css/registration.css">
-<div class="row registration-block">
-	<div class="col-xs-4 col-xs-offset-4">
-		<div class="center-block registration-title">
-			<h1>Профиль</h1>
-		</div>
+<link rel="stylesheet" href="/rating/css/profile.css">
+
+<div class="row">
+	<div class="col-xs-6 col-xs-offset-3">
+		<h1 id="profile-title">Профиль</h1>
+		<ul class="nav nav-tabs nav-justified" role="tablist">
+		<?php foreach ($data['profile-menu'] as $row): ?>
+			<li <?php if ($row['active']): ?>
+				class="active"
+			<?php endif ?>
+			><a href="<?=$row['href']?>"><?=$row['title']?></a></li>
+		<?php endforeach; ?>
+		</ul>
+		<hr>
 		<!-- будет ли профиль отображать только форму добавления нового имени\фимилии\отчества -->
-		<form class="form-horizontal" role="form" action="profile" method="post">
-			<div class="form-group">
-				<label for="inputFirstName" class="col-xs-2 control-label">Имя</label>
-				<div class="col-xs-10">
-					<input type="login" class="form-control" id="inputFirstName" placeholder="Имя" name="firstName">
+		<?php if ($data['place'] == 'edit'): ?>
+			edit
+		<?php endif ?>
+		<?php if ($data['place'] == 'subscribed'): ?>
+			subscribed
+		<?php endif ?>
+		<?php if ($data['place'] == 'new'): ?>
+			<form class="form-horizontal" role="form" action="profile" method="post">
+				<div class="form-group">
+					<label for="inputFirstName" class="col-xs-2 control-label">Имя</label>
+					<div class="col-xs-10">
+						<input type="login" class="form-control" id="inputFirstName" placeholder="Имя" name="firstName">
+					</div>
 				</div>
-			</div>
-			<div class="form-group">
-				<label for="inputLastName" class="col-sm-2 control-label">Фамилия</label>
-				<div class="col-xs-10">
-					<input type="login" class="form-control" id="inputLastName" placeholder="Фамилия" name="lastName">
+				<div class="form-group">
+					<label for="inputLastName" class="col-sm-2 control-label">Фамилия</label>
+					<div class="col-xs-10">
+						<input type="login" class="form-control" id="inputLastName" placeholder="Фамилия" name="lastName">
+					</div>
 				</div>
-			</div>
-			<div class="form-group">
-				<label for="inputPatronymic" class="col-sm-2 control-label">Отчество</label>
-				<div class="col-xs-10">
-					<input type="login" class="form-control" id="inputPatronymic" placeholder="Отчество" name="patronymic">
+				<div class="form-group">
+					<label for="inputPatronymic" class="col-sm-2 control-label">Отчество</label>
+					<div class="col-xs-10">
+						<input type="login" class="form-control" id="inputPatronymic" placeholder="Отчество" name="patronymic">
+					</div>
 				</div>
-			</div>
-			<div class="form-group">
-				<div class="col-sm-offset-2 col-sm-10">
-					<button type="submit" name="submit" class="btn btn-primary ">Добавить нового человека</button>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" name="submit" class="btn btn-primary ">Добавить нового человека</button>
+					</div>
 				</div>
-			</div>
-		</form>
+			</form>
+		<?php endif ?>
 	</div>
 </div>

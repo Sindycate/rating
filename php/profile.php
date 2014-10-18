@@ -10,6 +10,19 @@ function profile()
 {
 	global $data;
 
+	$data['profile-menu'] = array(
+		'edit'=> array(
+			'href' => '/rating/profile/edit',
+			'title' => 'Изменить данные'),
+		'subscribed'=> array(
+			'href' => '/rating/profile/subscribed',
+			'title' => 'Подписки'),
+		'new'=> array(
+			'href' => '/rating/profile/new',
+			'title' => 'Добавить студента')
+		);
+	$data['profile-menu'][$data['place']]['active'] = true;
+
 	if (isset($_POST['submit']) && $data['user'] && check_entered_data() && check_for_duplicates())
 	{
 		add_person();
