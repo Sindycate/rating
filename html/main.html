@@ -35,7 +35,12 @@
 					<td>
 						<form action="." method="post">
 							<input type="hidden" name="vote" value="1">
-							<button class="btn" type="submit" name="<?php echo $data['user']['id']; ?>" value="<?php echo $data['students'][$ii]['id']; ?>">+</button>
+							<button class="btn" type="submit" name="<?php echo $data['user']['id']; ?>"
+							<?php if ($data['type'] == 'subscribe'): ?>
+								value="<?php echo $data['students'][$ii]['student_id']; ?>"
+							<?php else: ?>
+								value="<?php echo $data['students'][$ii]['id']; ?>"
+							<?php endif ?>>+</button>
 						</form>
 					</td>
 				<?php } ?>

@@ -21,7 +21,8 @@ function profile()
 			'href' => '/rating/profile/new',
 			'title' => 'Добавить студента')
 		);
-	$data['profile-menu'][$data['place']]['active'] = true;
+
+	$data['profile-menu'][(!empty($data['place'])) ? $data['place'] : 'edit']['active'] = true;
 
 	if (isset($_POST['submit']) && $data['user'] && check_entered_data() && check_for_duplicates())
 	{

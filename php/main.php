@@ -206,8 +206,6 @@ function unsubscribe($user_id, $student_id)
 		$db_unsubscribe_check->execute();
 		if (!$db_unsubscribe_check->rowCount())
 		{
-			echo $user_id;
-			echo $student_id;
 			$data['warning']['subscribe'] = "Вы не подписаны на этого человека";
 			return false;
 		}
@@ -330,8 +328,8 @@ function student_check($user_id, $student_id)
 		$db_student_check = database::$DBH->prepare(
 			"SELECT *
 			 FROM `students`
-			 WHERE id = :id");
-		$db_student_check->bindValue(":id", $student_id);
+			 WHERE `id` = :student_id");
+		$db_student_check->bindValue(":student_id", $student_id, PDO::PARAM_INT);
 		$db_student_check->execute();
 
 		if (!$db_student_check->rowCount())

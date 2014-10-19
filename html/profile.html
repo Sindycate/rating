@@ -13,7 +13,7 @@
 		</ul>
 		<hr>
 		<!-- будет ли профиль отображать только форму добавления нового имени\фимилии\отчества -->
-		<?php if ($data['place'] == 'edit'): ?>
+		<?php if ($data['place'] == 'edit' || $data['place'] == ''): ?>
 			edit
 		<?php endif ?>
 		<?php if ($data['place'] == 'subscribed'): ?>
