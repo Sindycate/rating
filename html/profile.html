@@ -17,7 +17,36 @@
 			edit
 		<?php endif ?>
 		<?php if ($data['place'] == 'subscribed'): ?>
-			subscribed
+			<!-- добавить в отдельный файл -->
+			<?php if ($data['students']) { ?>
+				<table class="table table-hover">
+					<tr>
+						<th><a href="?order=1">Фамилия</a></th>
+						<th>Имя</th>
+						<th>Отчество</th>
+						<?php if ($data['user']) { ?>
+							<th>Unfollow</th>
+						<?php } ?>
+					</tr>
+					<?php for ($ii = 0; $ii < count($data['students']); ++$ii) { ?>
+						<tr>
+							<td><?php echo $data['students'][$ii]['last_name']; ?></td>
+							<td><?php echo $data['students'][$ii]['first_name']; ?></td>
+							<td><?php echo $data['students'][$ii]['patronymic']; ?></td>
+							<?php if ($data['user']) { ?>
+								<td>
+									<form action="" method="post">
+										<input type="hidden" name="unsubscribe" value="1">
+										<button class="btn btn-warning" type="submit" name="<?php echo $data['user']['id']; ?>" value="<?php echo $data['students'][$ii]['student_id']; ?>">Unfollow</button>
+									</form>
+								</td>
+							<?php } ?>
+						</tr>
+					<?php } ?>
+				</table>
+			<?php } else { ?>
+				<div class="alert alert-danger " role="alert">Вы ни на кого не подписаны</div>
+			<?php } ?>
 		<?php endif ?>
 		<?php if ($data['place'] == 'new'): ?>
 			<form class="form-horizontal" role="form" action="profile" method="post">
