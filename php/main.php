@@ -45,8 +45,14 @@ function main()
 	prepare_find_data();
 	if ($data['place'] == 'all' || !$data['user'] || !get_subscribe_check())
 	{
-		$data['type'] = 'all';
-		$data['students'] = get_students();
+		students::data_prepare(); //подготовка данных()
+
+		$data['place'] = 'all';
+		$data['pages_num'] = students::$pages_num; // суммарное количество строниц
+		$data['current_page'] = students::$current_page;  // текущая страница ищз подлготовленных данных
+		$data['students'] = students::get_students();
+
+
 
 		if ($data['user']['id'])
 		{
@@ -363,66 +369,6 @@ function student_check($user_id, $student_id)
 }
 
 /**
- * Выборка всех студентов из рейтинга
- *
- * @return array
- * @author SergeShaw
- **/
-function get_students()
-{
-	global $data;
-
-	try
-	{
-		$db_students_num = database::$DBH->prepare(
-			"SELECT count(*)
-			 FROM `students`");
-		$db_students_num->execute();
-
-		$students_num = $db_students_num->fetch();
-		$data['rows']['count'] = $students_num[0];
-
-		$order_list = array("points", "last_name","faculty", "USE");
-
-		if (isset($_GET['page_num']))
-		{
-			$data['page']['current'] = $_GET['page_num'];
-		}
-		else {
-			$data['page']['current'] = 1;
-		}
-
-		$start_pos = ($data['page']['current'] - 1) * $data['rows']['num'];
-
-		$order = $order_list[($order_list[$_GET['order']]) ? $_GET['order'] : 0];
-
-		$db_students = database::$DBH->prepare(
-			"SELECT *
-			 FROM `students`
-			 WHERE `first_name` REGEXP :first_name
-			 AND `last_name` REGEXP :last_name
-			 ORDER BY `$order` DESC
-			 LIMIT :start_pos, :rows_num");
-		// $db_students->bindValue(':order', $data['order']);1
-		$db_students->bindValue(':start_pos', $start_pos, PDO::PARAM_INT);
-		$db_students->bindValue(':rows_num', $data['rows']['num'], PDO::PARAM_INT);
-		$db_students->bindValue(':first_name', $data['find']['first_name']);
-		$db_students->bindValue(':last_name', $data['find']['last_name']);
-		$db_students->execute();
-
-		if ($db_students->rowCount())
-		{
-			return $db_students->fetchAll();
-		}
-	}
-	catch (PDOExeption $ee)
-	{
-		$data['error']['PDO'] = "Ошибка базы данных: " . $ee->getMessage();
-		return false;
-	}
-}
-
-/**
  * Проверка на возможность голосовать
  *
  * @return bool
@@ -465,7 +411,6 @@ function prepare_find_data()
 	$data['find']['last_name'] = (!empty($_GET['last_name']) ? $_GET['last_name'] : '.*');
 	$data['find']['first_name'] = (!empty($_GET['first_name']) ? $_GET['first_name'] : '.*');
 }
-
 
 
 main();

@@ -1,4 +1,4 @@
-<form class="navbar-form navbar-left" role="search" action="." method="get">
+<form class="navbar-form navbar-left" role="search" action="all" method="get">
 	<div class="form-group">
 		<input type="text" class="form-control" placeholder="Фамилия" name="last_name">
 		<input type="text" class="form-control" placeholder="Имя" name="first_name">
@@ -72,13 +72,11 @@
 </table>
 <div class="page_nav">
 	<ul class="pagination">
-		<?php for ($ii = (($data['page']['current'] - 4 > 0) ? $data['page']['current'] - 4 : 1); $ii < $data['page']['current'] && $data['page']['current'] != 1; $ii++) { ?>
+		<?php for ($ii = (($data['current_page'] - 4 > 0) ? $data['current_page'] - 4 : 1); $ii < $data['current_page'] && $data['current_page'] != 1; $ii++) { ?>
 			<li><a href="?page_num=<?php echo ($ii); ?>"><?php echo ($ii); ?></a></li>
 		<?php } ?>
-			<li><a href="?page_num=<?php echo ($data['page']['current']); ?>"><?php echo $data['page']['current']; ?></a></li>
-		<?php
-		$pages_num = (($data['rows']['count'] / $data['rows']['num']) + (($data['rows']['count'] % $data['rows']['num']) ? 1 : 0));
-		for ($ii = $data['page']['current'] + 1; ($ii <= $pages_num) && ($ii <= $data['page']['current'] + 4); $ii++) { ?>
+			<li><a href="?page_num=<?php echo ($data['current_page']); ?>"><?php echo $data['current_page']; ?></a></li>
+		<?php for ($ii = $data['current_page'] + 1; ($ii <= $data['pages_num']) && ($ii <= $data['current_page'] + 4); $ii++) { ?>
 			<li><a href="?page_num=<?php echo ($ii); ?>"><?php echo ($ii); ?></a></li>
 		<?php } ?>
 	</ul>

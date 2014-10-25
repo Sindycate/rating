@@ -51,6 +51,7 @@ function router()
 	else
 	{
 		$data['place'] = $requestURI[2];
+		require_once('/php/students.php');
 		require_once('/php/main.php');
 	}
 }
