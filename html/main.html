@@ -33,10 +33,10 @@
 				<td><?php echo $data['students'][$ii]['category']; ?></td>
 				<?php if ($data['user']['vote']) { ?>
 					<td>
-						<form action="." method="post">
+						<form action="" method="post">
 							<input type="hidden" name="vote" value="1">
 							<button class="btn" type="submit" name="<?php echo $data['user']['id']; ?>"
-							<?php if ($data['type'] == 'subscribe'): ?>
+							<?php if ($data['place'] == 'subscribe'): ?>
 								value="<?php echo $data['students'][$ii]['student_id']; ?>"
 							<?php else: ?>
 								value="<?php echo $data['students'][$ii]['id']; ?>"
@@ -44,7 +44,7 @@
 						</form>
 					</td>
 				<?php } ?>
-				<?php if ($data['user'] && $data['type'] == 'all') { ?>
+				<?php if ($data['user'] && $data['place'] == 'all') { ?>
 					<td>
 					<form action="" method="post">
 						<?php if (in_array($data['students'][$ii]['id'], $data['subscribe'])){?>
@@ -57,7 +57,7 @@
 					</form>
 					</td>
 				<?php } ?>
-				<?php if ($data['user'] && ($data['type'] == 'subscribe')) { ?>
+				<?php if ($data['user'] && ($data['place'] == 'subscribe')) { ?>
 					<td>
 						<form action="" method="post">
 							<input type="hidden" name="unsubscribe" value="1">

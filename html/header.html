@@ -59,6 +59,10 @@
 				<div class="alert alert-danger" role="alert"><?php echo($data['error']['db_check']); ?></div>
 			<?php } ?>
 
+			<?php if ($data['error']['registration']) { ?>
+				<div class="alert alert-danger" role="alert"><?php echo($data['error']['registration']); ?></div>
+			<?php } ?>
+
 			<?php if ($data['error']['PDO']) { ?>
 				<div class="alert alert-danger" role="alert"><?php echo($data['error']['PDO']); ?></div>
 			<?php } ?>

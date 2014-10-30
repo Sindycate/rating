@@ -14,15 +14,18 @@ function profile()
 	{
 		if (isset($_POST['unsubscribe']) &&
 			$_POST[$data['user']['id']] &&
-			unsubscribe($data['user']['id'], $_POST[$data['user']['id']]))
+			students::unsubscribe($data['user']['id'], $_POST[$data['user']['id']]))
 		{
 			$data['success'] = "Вы отписались";
 		}
 
-		$data['students'] = get_subscribe();
+		students::subscribe_prepare($data['user']['id']);
+		$data['pages_num'] = students::$pages_num; // суммарное количество страниц
+		$data['current_page'] = students::$current_page;  // текущая страница из подготовленных данных
+		$data['students'] = students::get_students(); // выборка одной страницы студентов
 
+		$data['students'] = students::get_subscribe($data['user']['id']);
 	}
-
 
 	$data['profile-menu'] = array(
 		'edit'=> array(
@@ -42,82 +45,6 @@ function profile()
 	{
 		add_person();
 	}
-}
-
-/**
- * Получем список студентов за которыми следит пользователь
- *
- * @return array
- * @author SergeShaw
- **/
-function get_subscribe()
-{
-	global $data;
-
-	try
-	{
-		$db_subscribe = database::$DBH->prepare(
-			"SELECT *
-			 FROM `students`, `subscribe`
-			 WHERE `subscribe`.`user_id`  = :user_id
-			 AND `subscribe`.`student_id` = `students`.`id`");
-		$db_subscribe->bindValue(':user_id', $data['user']['id']);
-		$db_subscribe->execute();
-
-		if ($db_subscribe->rowCount())
-		{
-			return $db_subscribe->fetchAll();
-		}
-	}
-	catch (PDOExeption $ee)
-	{
-		$data['error']['PDO'] = "Ошибка базы данных: " . $ee->getMessage();
-		return false;
-	}
-}
-
-/**
- * Отписываем пользвоателя от студента
- *
- * @return bool
- * @author SergeShaw
- **/
-function unsubscribe($user_id, $student_id)
-{
-	global $data;
-
-	try
-	{
-		$db_unsubscribe_check = database::$DBH->prepare(
-			"SELECT *
-			 FROM `subscribe`
-			 WHERE `user_id`  = :user_id
-			 AND `student_id` = :student_id");
-		$db_unsubscribe_check->bindValue(":user_id", $user_id);
-		$db_unsubscribe_check->bindValue(":student_id", $student_id);
-		$db_unsubscribe_check->execute();
-		if (!$db_unsubscribe_check->rowCount())
-		{
-			$data['warning']['subscribe'] = "Вы не подписаны на этого человека";
-			return false;
-		}
-
-		$db_unsubscribe = database::$DBH->prepare(
-			"DELETE FROM `subscribe`
-			 WHERE `user_id`  = :user_id
-			 AND `student_id` = :student_id");
-		$db_unsubscribe->bindValue(":user_id", $user_id);
-		$db_unsubscribe->bindValue(":student_id", $student_id);
-		$db_unsubscribe->execute();
-
-		return true;
-	}
-	catch (PDOException $ee)
-	{
-		$data['error']['PDO'] = "Ошибка базы данных: " . $ee->getMessage();
-	}
-
-	return false;
 }
 
 /**
