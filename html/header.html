@@ -71,6 +71,10 @@
 				<div class="alert alert-danger" role="alert"><?php echo($data['error']['vote']); ?></div>
 			<?php } ?>
 
+			<?php if ($data['warning']['send_mail']) { ?>
+				<div class="alert alert-warning" role="alert"><?php echo($data['warning']['send_mail']); ?></div>
+			<?php } ?>
+
 			<?php if ($data['warning']['subscribe']) { ?>
 				<div class="alert alert-warning" role="alert"><?php echo($data['warning']['subscribe']); ?></div>
 			<?php } ?>

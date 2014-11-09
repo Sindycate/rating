@@ -43,19 +43,19 @@ class students
 	 **/
 	private static $order;
 
-/**
- * имя студента
- *
- * @var string
- **/
-private static $first_name;
+	/**
+	 * имя студента
+	 *
+	 * @var string
+	 **/
+	private static $first_name;
 
-/**
- * фамилия студента
- *
- * @var string
- **/
-private static $last_name;
+	/**
+	 * фамилия студента
+	 *
+	 * @var string
+	 **/
+	private static $last_name;
 
 	/**
 	 * Массив, который хранит параметры для сортировки при запросе к б\д

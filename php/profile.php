@@ -26,11 +26,26 @@ function profile()
 
 		$data['students'] = students::get_subscribe($data['user']['id']);
 	}
+	else if ($data['place'] == 'edit' || $data['place'] == '')
+	{
+		if (!empty($_POST['request']))
+		{
+			$verification_email = new email(get_email());
+			if($verification_email->send_mail())
+			{
+				$data['success'] .= " Сообщение было отправлено,пожалуйста, зайдите на почу и подтвердите ваш email.";
+			}
+			else
+			{
+				$data['warning']['send_mail'] = "Cобщение не было отправлено, попробуйте сделать это позже. В профиле, во вкладке 'управление' нажмите на кнопку 'Отправить сообщение'.";
+			}
+		}
+	}
 
 	$data['profile-menu'] = array(
 		'edit'=> array(
 			'href' => '/rating/profile/edit',
-			'title' => 'Изменить данные'),
+			'title' => 'Управление'),
 		'subscribed'=> array(
 			'href' => '/rating/profile/subscribed',
 			'title' => 'Подписки'),
@@ -153,6 +168,35 @@ function add_person()
 		$db_add_users->execute();
 
 		$data['success'] = "Добавление нового пользователя прошло успешно.";
+	}
+	catch(PDOException $ee)
+	{
+		$data['error']['PDO'] = "Ошибка базы данных: " . $ee->getMessage();
+	}
+}
+
+/**
+ * функция возвращает переменную, которая хранит емеил текущего пользователя
+ *
+ * @return string
+ * @author Mip
+ **/
+function get_email()
+{
+	global $data;
+
+	try
+	{
+		$db_get_email = database::$DBH->prepare(
+			"SELECT `email`
+			 FROM `users`
+			 WHERE `id` = :user_id");
+		$db_get_email->bindValue(":user_id", $data['user']['id']);
+		$db_get_email->execute();
+
+
+		$user_email = $db_get_email->fetch();
+		return $user_email[0];
 	}
 	catch(PDOException $ee)
 	{

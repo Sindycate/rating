@@ -33,6 +33,7 @@ function router()
 
 	if ($requestURI[2] == 'registration')
 	{
+		require_once('/php/email.php');
 		require_once('/php/registration.php');
 	}
 	else if ($requestURI[2] == 'sign-in')
@@ -43,9 +44,14 @@ function router()
 	{
 		require_once('/php/logout.php');
 	}
+	else if ($requestURI[2] == 'activation')
+	{
+		require_once('/php/activation.php');
+	}
 	else if ($requestURI[2] == 'profile' && $data['user'])
 	{
 		$data['place'] = $requestURI[3];
+		require_once('/php/email.php');
 		require_once('/php/students.php');
 		require_once('/php/profile.php');
 	}

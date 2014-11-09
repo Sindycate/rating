@@ -126,14 +126,26 @@ function register()
 	try
 	{
 		$db_add_users = database::$DBH->prepare(
-			"INSERT INTO `users` (`login`, `hash`, `email`)
-			 VALUES (:login, :hash, :email)");
+			"INSERT INTO `users` (`login`, `hash`, `email`, `activation`)
+			 VALUES (:login, :hash, :email, :activation)");
 		$db_add_users->bindValue(':login', $_POST['login']);
 		$db_add_users->bindValue(':hash', md5($_POST['password']));
 		$db_add_users->bindValue(':email', $_POST['email']);
+		$db_add_users->bindValue(':activation', md5($_POST['email']));
 		$db_add_users->execute();
 
-		$data['success'] = "Регистрация прошла успешно.";
+		$data['success'] = "Регистрация прошла успешно";
+
+		$verification_email = new email($_POST['email']);
+		if($verification_email->send_mail())
+		{
+			$data['success'] .= ", пожалуйста, зайдите на почу и подтвердите ваш email.";
+		}
+		else
+		{
+			$data['warning']['send_mail'] = "Cобщение не было отправлено, попробуйте сделать это позже. В профиле, во вкладке 'управление' нажмите на кнопку 'Отправить сообщение'.";
+		}
+
 	}
 	catch(PDOException $e)
 	{
