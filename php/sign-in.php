@@ -15,10 +15,49 @@ $user = array();
  **/
 function sign_in()
 {
+	echo "0";
 	if (isset($_POST['submit']) && check_entered_data() && db_check())
 	{
 		login();
 	}
+	else if (isset($_GET['code']))// || isset($token['access_token']))
+	{
+		$user_info = get_info_user_vk();
+
+		if (!$user_info)
+		{
+			echo "1";
+			// TODO: PRINT ERROR
+			return;
+		}
+
+		if (!db_chek_for_duplicate($user_info))
+		{
+			if (!registration_vk($user_info))
+			{
+				echo "2";
+				// TODO: PRINT ERROR
+				return;
+			}
+		}
+
+		login_vk(db_chek_for_duplicate($user_info));
+	}
+}
+
+/**
+ * создаёт сессию пользователю
+ *
+ * @return void
+ * @author Mip
+ **/
+function login_vk($user_id)
+{
+	session_name('lowlogin');
+	session_start();
+	$_SESSION['user_id'] = $user_id;
+
+	header("Location: .");
 }
 
 /**
@@ -165,10 +204,112 @@ function db_check()
 	}
 }
 
-sign_in();
+/**
+ * функция, которая получает доступ к API вконтакте и возвращает данные пользователя
+ *
+ * @return array
+ * @author Mip
+ **/
+function get_info_user_vk()
+{
+	global $data;
+	global $vk_link;
 
+	if (isset($_GET['code']))
+	{
+		var_dump($vk_link['access']);
+		$token = json_decode(file_get_contents($vk_link['access']), true);
+
+		if (isset($token['access_token']))
+		{
+			$url_api = 'https://api.vk.com/method/users.get';
+			$params_api = array(
+				'uids'           => $token['user_id'],
+				'fields'         => 'uid,first_name,last_name,screen_name,sex,bdate,photo_big',
+				'acess_token'    => $token['access_token']
+			);
+			$user_info = json_decode(file_get_contents($url_api    . '?' . urldecode(http_build_query($params_api))), true);
+
+			if (isset($user_info['response'][0]['uid']))
+			{
+				$user_info = $user_info['response'][0];
+				return $user_info;
+			}
+			else
+			{
+				return array();
+			}
+		}
+	}
+}
+
+/**
+ * функция, которая возвращает id пользователя в случае, если он уже есть в бд
+ *
+ * @return int
+ * @author Mip
+ **/
+function db_chek_for_duplicate($user_info)
+{
+	global $data;
+
+	try
+	{
+		$uid = $user_info['uid'];
+
+		$db_user_check = database::$DBH->prepare(
+			"SELECT `id`
+			 FROM `users`
+			 WHERE `uid` = :uid");
+		$db_user_check->bindValue(':uid', $uid);
+		$db_user_check->execute();
+
+		return ($db_user_check->rowCount()) ? $db_user_check->fetch() : 0;
+	}
+	catch(PDOException $ee)
+	{
+		$data['error']['PDO'] = "Ошибка базы данных: " . $ee->getMessage();
+		return 0;
+	}
+
+}
+
+/**
+ * Регистрирует пользователя, который заходит из вк и возвращает его id
+ *
+ * @return int
+ * @author Mip
+ **/
+function registration_vk($user_info)
+{
+	global $data;
+
+	try
+	{
+		$db_add_users = database::$DBH->prepare(
+			"INSERT INTO `users` (`first_name`, `last_name`, `uid`)
+			 VALUES (:first_name, :last_name, :uid)");
+		$db_add_users->bindValue(':first_name', $user_info['first_name']);
+		$db_add_users->bindValue(':last_name', $user_info['last_name']);
+		$db_add_users->bindValue(':uid', $user_info['uid']);
+		$db_add_users->execute();
+
+		$data['success'] = "Регистрация прошла успешно, пожалуйста, кликните на иконку VK ещё раз, чтобы войти";
+
+		return true;
+	}
+	catch(PDOException $e)
+	{
+		$data['error']['PDO'] = "Ошибка базы данных: " . $e->getMessage();
+
+		return false;
+	}
+}
+
+sign_in();
+echo "<pre>";
 require_once('/html/header.html');
-// require_once('/html/sign-in.html');
+require_once('/html/sign-in.html');
 require_once('/html/footer.html');
 
 ?>

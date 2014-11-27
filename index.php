@@ -1,1 +1,1 @@
-<?php require_once("/router.php"); ?>
+<?php require_once("./router.php"); ?>

@@ -3,6 +3,10 @@ define('PDO_CONNECT_HOST', 'mysql:host=localhost;dbname=rating;');
 define('PDO_CONNECT_USER', 'root');
 define('PDO_CONNECT_PASS', '');
 
+// define('PDO_CONNECT_HOST', 'mysql:host=mysql87.1gb.ru;dbname=gb_rating;');
+// define('PDO_CONNECT_USER', 'gb_rating');
+// define('PDO_CONNECT_PASS', '0124321a34');
+
 $PDO_UTF8 = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES `utf8`');
 define('PDO_UTF', 'return ' . var_export($PDO_UTF8, 1) . ';');
 

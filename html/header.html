@@ -6,6 +6,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="/rating/bootstrap-3.2.0-dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/rating/css/style.css">
+
+<!-- 	<link rel="stylesheet" href="../bootstrap-3.2.0-dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="../css/style.css"> -->
 </head>
 <body>
 	<div class="navbar navbar-inverse navbar-static-top" role="navigation">
@@ -29,6 +32,7 @@
 
 			<?php if (!$data['user']) { ?>
 				<form class="navbar-form navbar-right" role="form" action="sign-in" method="post">
+					<a class="btn btn-primary" href="<?php echo ($vk_link['auth']); ?>">VK</a>
 					<div class="form-group">
 						<input type="text" name="login" placeholder="Login" class="form-control">
 					</div>
@@ -36,7 +40,7 @@
 						<input type="password" name="password" placeholder="Password" class="form-control">
 					</div>
 					<button type="submit" name="submit" class="btn btn-success">Sign in</button>
-					<a class="btn btn-primary" href="/rating/registration">Sign up</a>
+					<a class="btn btn-warning" href="/rating/registration">Sign up</a>
 				</form>
 			<?php } else { ?>
 				<!-- <?php echo($data['user']['id']); ?> -->

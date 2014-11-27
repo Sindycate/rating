@@ -206,8 +206,8 @@ function get_email()
 
 profile();
 
-require_once('/html/header.html');
-require_once('/html/footer.html');
-require_once('/html/profile.html');
+require_once('./html/header.html');
+require_once('./html/footer.html');
+require_once('./html/profile.html');
 
 ?>
